@@ -15,8 +15,21 @@ Installation
 
 You can easily install this plugin using composer as follows:
 
-```bash
-composer require alaxos/cakephp3-blueimp-upload
+```composer.json
+...
+"repositories": [
+    {
+        "type": "vcs", 
+        "url": "https://github.com/NonaInc/cakephp3-blueimp-upload.git"
+    }
+],
+...
+"require": {
+    ...
+    "nonainc/cakephp3-blueimp-upload": "*"
+    ...
+},
+...
 ```
 
 ### Enabling the plugin
