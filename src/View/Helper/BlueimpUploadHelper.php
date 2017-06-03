@@ -176,13 +176,13 @@ class BlueimpUploadHelper extends Helper
             $js[] = '        function validation() {';
             $js[] = '            let uploadErrors = [];';
             if($options['accept_file_types'][0]) {
-                $js[] = '            if(data.originalFiles[0]["type"].length && !' . $accept_file_types[0] . '.test(data.originalFiles[0]["type"])) {';
-                $js[] = '                uploadErrors.push("' . $accept_file_types[1] . '");';
+                $js[] = '            if(data.originalFiles[0]["type"].length && !' . $options['accept_file_types'][0] . '.test(data.originalFiles[0]["type"])) {';
+                $js[] = '                uploadErrors.push("' . $options['accept_file_types'][1] . '");';
                 $js[] = '            }';
             }
             if($options['max_file_size'][0]) {
-                $js[] = '            if(data.originalFiles[0]["size"] > ' . $max_file_size[0] . ') {';
-                $js[] = '                uploadErrors.push("' . $max_file_size[1] . '");';
+                $js[] = '            if(data.originalFiles[0]["size"] > ' . $options['max_file_size'][0] . ') {';
+                $js[] = '                uploadErrors.push("' . $options['max_file_size'][1] . '");';
                 $js[] = '            }';
             }
             $js[] = '            if(uploadErrors.length > 0) {';
@@ -192,6 +192,7 @@ class BlueimpUploadHelper extends Helper
             $js[] = '            else {';
             $js[] = '                return true;';
             $js[] = '            }';
+            $js[] = '        }';
             
             if($options['auto_submit']) {
                 $js[] = '        if(validation()) {';
