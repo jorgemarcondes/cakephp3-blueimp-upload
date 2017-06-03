@@ -49,7 +49,10 @@ class BlueimpUploadHelper extends Helper
             'size_uploaded_selector'         => null,
             'notification_selector'          => null,
             'submit_btn_selector'            => null,
-            'files_list_selector'            => null
+            'files_list_selector'            => null,
+            
+            'accept_file_types'              => [null, 'このファイルはフォーマットが正しくありません.'],
+            'max_file_size'                  => [null, 'このファイルのサイズは大きすぎます.'],
         ];
 
         $options = array_merge($default_options, $options);
@@ -169,9 +172,31 @@ class BlueimpUploadHelper extends Helper
 
             $js[] = '        ChunkedFileUpload.hideNotification("' . $options['notification_selector'] . '");';
             $js[] = '        ';
-
+            
+            $js[] = '        function validation() {';
+            $js[] = '            let uploadErrors = [];';
+            if($options['accept_file_types'][0]) {
+                $js[] = '            if(data.originalFiles[0]["type"].length && !' . $accept_file_types[0] . '.test(data.originalFiles[0]["type"])) {';
+                $js[] = '                uploadErrors.push("' . $accept_file_types[1] . '");';
+                $js[] = '            }';
+            }
+            if($options['max_file_size'][0]) {
+                $js[] = '            if(data.originalFiles[0]["size"] > ' . $max_file_size[0] . ') {';
+                $js[] = '                uploadErrors.push("' . $max_file_size[1] . '");';
+                $js[] = '            }';
+            }
+            $js[] = '            if(uploadErrors.length > 0) {';
+            $js[] = '                alert("ファイル名 : " + data.originalFiles[0]["name"] + "\n" + uploadErrors.join("\n"))';
+            $js[] = '                return false;';
+            $js[] = '            }'; 
+            $js[] = '            else {';
+            $js[] = '                return true;';
+            $js[] = '            }';
+            
             if($options['auto_submit']) {
-                $js[] = '        data.submit();';
+                $js[] = '        if(validation()) {';
+                $js[] = '            data.submit();';
+                $js[] = '        }';
             } else {
                 $js[] = '        var selected_filenames = [];';
                 $js[] = '        $("' . $options['files_list_selector'] . '").find("div.filename").each(function(index, data){';
@@ -185,7 +210,9 @@ class BlueimpUploadHelper extends Helper
                 $js[] = '                ';
                 $js[] = '                $("' . $options['submit_btn_selector'] . '").on("click", function () {';
                 $js[] = '                   if(data.files.length > 0) {';
-                $js[] = '                       data.submit();';
+                $js[] = '                       if(validation()) {';
+                $js[] = '                           data.submit();';
+                $js[] = '                       }';
                 $js[] = '                   }';
                 $js[] = '                });';
                 $js[] = '                ';
