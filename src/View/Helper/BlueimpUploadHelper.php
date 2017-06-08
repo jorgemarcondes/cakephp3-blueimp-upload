@@ -51,6 +51,7 @@ class BlueimpUploadHelper extends Helper
             'submit_btn_selector'            => null,
             'files_list_selector'            => null,
             
+            'validation'                     => 'function(){return true;}',
             'accept_file_types'              => [null, 'このファイルはフォーマットが正しくありません.'],
             'max_file_size'                  => [null, 'このファイルのサイズは大きすぎます.'],
         ];
@@ -173,29 +174,10 @@ class BlueimpUploadHelper extends Helper
             $js[] = '        ChunkedFileUpload.hideNotification("' . $options['notification_selector'] . '");';
             $js[] = '        ';
             
-            $js[] = '        function validation() {';
-            $js[] = '            let uploadErrors = [];';
-            if($options['accept_file_types'][0]) {
-                $js[] = '            if(data.originalFiles[0]["type"].length && !' . $options['accept_file_types'][0] . '.test(data.originalFiles[0]["type"])) {';
-                $js[] = '                uploadErrors.push("' . $options['accept_file_types'][1] . '");';
-                $js[] = '            }';
-            }
-            if($options['max_file_size'][0]) {
-                $js[] = '            if(data.originalFiles[0]["size"] > ' . $options['max_file_size'][0] . ') {';
-                $js[] = '                uploadErrors.push("' . $options['max_file_size'][1] . '");';
-                $js[] = '            }';
-            }
-            $js[] = '            if(uploadErrors.length > 0) {';
-            $js[] = '                alert("ファイル名 : " + data.originalFiles[0]["name"] + "\n" + uploadErrors.join("\n"))';
-            $js[] = '                return false;';
-            $js[] = '            }'; 
-            $js[] = '            else {';
-            $js[] = '                return true;';
-            $js[] = '            }';
-            $js[] = '        }';
+            $js[] = '        let validation = '.$options['validation'];
             
             if($options['auto_submit']) {
-                $js[] = '        if(validation()) {';
+                $js[] = '        if(validation(data)) {';
                 $js[] = '            data.submit();';
                 $js[] = '        }';
             } else {
