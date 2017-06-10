@@ -174,7 +174,7 @@ class BlueimpUploadHelper extends Helper
             $js[] = '        ChunkedFileUpload.hideNotification("' . $options['notification_selector'] . '");';
             $js[] = '        ';
             
-            $js[] = '        let validation = '.$options['validation'];
+            $js[] = '        var validation = '.$options['validation'];
             
             if($options['auto_submit']) {
                 $js[] = '        if(validation(data)) {';
