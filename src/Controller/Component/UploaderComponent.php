@@ -25,7 +25,7 @@ class UploaderComponent extends Component
      */
     protected $_upload_errors = [];
     
-    public function upload($upload_folder, $callback, $options = array())
+    public function upload($upload_folder, $options = array(), $callback = null)
     {
         $default_options = ['auto_subfolder'     => true,
                             'override_by_name'   => false,
@@ -114,7 +114,7 @@ class UploaderComponent extends Component
                                 
                                 /****/
                                 
-                                $unique_filename   = $upload_id . '_' . $original_filename;
+                                $unique_filename   = $upload_id;
                                 
                                 if($options['auto_subfolder'])
                                 {
@@ -181,7 +181,7 @@ class UploaderComponent extends Component
                                         $upload->hash     = sha1_file($uploaded_filepath);
                                         
                                         //original code
-                                        $callback($uploaded_filepath);
+                                        if ($callback) $callback($uploaded_filepath);
                                     }
                                     else
                                     {

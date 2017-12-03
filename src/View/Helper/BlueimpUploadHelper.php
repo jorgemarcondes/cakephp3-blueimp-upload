@@ -49,7 +49,11 @@ class BlueimpUploadHelper extends Helper
             'size_uploaded_selector'         => null,
             'notification_selector'          => null,
             'submit_btn_selector'            => null,
-            'files_list_selector'            => null
+            'files_list_selector'            => null,
+            
+            'validation'                     => 'function(){return true;}',
+            'accept_file_types'              => [null, 'このファイルはフォーマットが正しくありません.'],
+            'max_file_size'                  => [null, 'このファイルのサイズは大きすぎます.'],
         ];
 
         $options = array_merge($default_options, $options);
@@ -169,9 +173,13 @@ class BlueimpUploadHelper extends Helper
 
             $js[] = '        ChunkedFileUpload.hideNotification("' . $options['notification_selector'] . '");';
             $js[] = '        ';
-
+            
+            $js[] = '        var validation = '.$options['validation'];
+            
             if($options['auto_submit']) {
-                $js[] = '        data.submit();';
+                $js[] = '        if(validation(data)) {';
+                $js[] = '            data.submit();';
+                $js[] = '        }';
             } else {
                 $js[] = '        var selected_filenames = [];';
                 $js[] = '        $("' . $options['files_list_selector'] . '").find("div.filename").each(function(index, data){';
@@ -185,7 +193,9 @@ class BlueimpUploadHelper extends Helper
                 $js[] = '                ';
                 $js[] = '                $("' . $options['submit_btn_selector'] . '").on("click", function () {';
                 $js[] = '                   if(data.files.length > 0) {';
-                $js[] = '                       data.submit();';
+                $js[] = '                       if(validation()) {';
+                $js[] = '                           data.submit();';
+                $js[] = '                       }';
                 $js[] = '                   }';
                 $js[] = '                });';
                 $js[] = '                ';
