@@ -20,13 +20,13 @@ You can easily install this plugin using composer as follows:
 "repositories": [
     {
         "type": "vcs", 
-        "url": "https://github.com/NonaInc/cakephp3-blueimp-upload.git"
+        "url": "https://github.com/jorgemarcondes/cakephp3-blueimp-upload.git"
     }
 ],
 ...
 "require": {
     ...
-    "nonainc/cakephp3-blueimp-upload": "*"
+    "jorgemarcondes/cakephp3-blueimp-upload": "*"
     ...
 },
 ...
