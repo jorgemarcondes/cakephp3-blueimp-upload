@@ -114,7 +114,7 @@ class UploaderComponent extends Component
                                 
                                 /****/
                                 
-                                $unique_filename   = $upload_id . '_' . $original_filename;
+                                $unique_filename   = $upload_id;
                                 
                                 if($options['auto_subfolder'])
                                 {
